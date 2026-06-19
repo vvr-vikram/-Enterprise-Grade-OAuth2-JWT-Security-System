@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: oauth2-security-system
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/oauth2_security_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: 1254
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000
+
+# Custom Security Configurations
+app:
+  jwt:
+    # 15 minutes in seconds
+    expiration: 900
+    # 7 days in seconds
+    refresh-expiration: 604800
+  redis:
+    # Set to true to use Redis caching for blacklisting and rate limiting
+    enabled: false
+  rate-limiting:
+    # Brute-force protection limits (max login attempts before temporary blocking)
+    enabled: true
+    max-attempts: 5
+    block-duration-seconds: 300 # 5 minutes block
+    # Global HTTP rate limiter (sliding window requests per minute per IP)
+    global-max-requests: 60
+  security:
+    https-enforced: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
